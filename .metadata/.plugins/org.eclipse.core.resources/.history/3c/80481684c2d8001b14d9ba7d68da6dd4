@@ -1,0 +1,34 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+    // Use JUnit test framework
+    compile 'com.google.maps:google-maps-services:0.2.5'
+    compile 'org.slf4j:slf4j-nop:1.7.25'
+    implementation 'com.google.guava:guava:21.0'
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.0'
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
+    compile 'com.google.maps:google-maps-services:0.2.5'
+    compile 'org.slf4j:slf4j-nop:1.7.25'
+}
+
+test {
+	useJUnitPlatform()
+}

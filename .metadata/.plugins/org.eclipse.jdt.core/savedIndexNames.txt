@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Github\Business_target_company\.metadata\.plugins\org.eclipse.jdt.core
+3435648363.index
+3216087806.index
+3078603515.index
