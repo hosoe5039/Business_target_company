@@ -1,4 +1,4 @@
-package Business_target_company_map;
+package com.example.demo;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,47 +8,58 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@WebServlet("/map2525")
 
-public class Surrounding_company extends HttpServlet{
+@Controller
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException{
+public class Surrounding_company {
+	@PostMapping("map2525")
+	String index(Model modelMap,@RequestParam(name = "lat")String lat,@RequestParam(name = "lng")String lng) throws IOException {
 
 		//文字コード設定
-		request.setCharacterEncoding("UTF-8");
+		System.out.println("値の取得"+lat + " "+ lng);
 
 		//JSPから現在地の緯度経度を取得する
-		double imakoko_lat = Double.parseDouble(request.getParameter("lat"));
-		double imakoko_ing = Double.parseDouble(request.getParameter("lng"));
-		String Current_location = imakoko_lat + "," + imakoko_ing;
+		double imakoko_lat = parseDouble(lat);
+		double imakoko_ing = parseDouble(lng);
+		String Current_location = lat + "," + lng;
 
 		System.out.println("テスト:jspから現在地を取得出来ていることを確認する");
 		System.out.println(Current_location);
 
 		//JSPに現在地の緯度経度を転送する
-		request.setAttribute("Current_location", Current_location);
+		modelMap.addAttribute("Current_location", Current_location);
 
 		//周辺の対象企業を取得する
 		String marker_info = marker_info(imakoko_lat,imakoko_ing);
 
 		if(marker_info.equals("該当なし")) {
-			request.getRequestDispatcher("/not_found.jsp").forward(request, response);
+			return "index";
 
 		}else {
 			//マーカ情報をJSPに転送
-			request.setAttribute("marker_info", marker_info);
-			request.getRequestDispatcher("/map.jsp").forward(request, response);
+			modelMap.addAttribute("marker_info", marker_info);
+			return "map";
 
 		}
 
 	}
+
+	private double parseDouble(String lat) {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	private String marker_info(double imakoko_lat,double imakoko_ing) throws  IOException {
 
@@ -56,11 +67,18 @@ public class Surrounding_company extends HttpServlet{
 		PreparedStatement company_adress_state =  null;
 		ResultSet company_adress = null;
 
-		String sql_1 = "select companys.company, companys.adress, place.latitude, place.longitude,";
-		String sql_2 = "(6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(place.latitude)) * COS(RADIANS(place.longitude) - RADIANS(?))+ SIN(RADIANS(?)) * SIN(RADIANS(place.latitude)))) as DISTANCE";
-		String sql_3 = " from companys inner join place ON companys.id = place.company_ID ORDER BY distance asc;";
+		String sql_1 = "select companys.company, companys.adress, places.latitude, places.longitude,";
+		String sql_2 = "(6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(places.latitude)) * COS(RADIANS(places.longitude) - RADIANS(?))+ SIN(RADIANS(?)) * SIN(RADIANS(places.latitude)))) as DISTANCE";
+		String sql_3 = " from companys inner join places ON companys.id = places.company_ID ORDER BY distance asc;";
 
 		String sql = sql_1 + sql_2 + sql_3;
+
+
+	    RowMapper<Company_data> rowMapper = new BeanPropertyRowMapper<Company_data>(Company_data.class);
+	    List<Company_data> MapList = jdbcTemplate.query(sql, rowMapper,imakoko_lat,imakoko_ing,imakoko_lat);
+
+	    System.out.println(MapList);
+	    System.out.println("ハロ");
 
 
 		//マーカー情報をリストで保存すらためのリスト

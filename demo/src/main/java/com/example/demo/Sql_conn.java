@@ -1,4 +1,4 @@
-package Business_target_company_map;
+package com.example.demo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
