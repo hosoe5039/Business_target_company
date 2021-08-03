@@ -70,7 +70,6 @@ INDEX VERSION 1.131+C:\Github\Business_target_company\.metadata\.plugins\org.ecl
 3371974318.index
 3640010149.index
 2390261277.index
-3435648363.index
 2434546212.index
 3610832747.index
 1636402638.index

@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication
-@EnableJdbcRepositories
 @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
 public class DemoApplication {
 
