@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class HelloController {
 
     @GetMapping("/hello222")
-    public String geeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "imakoko";
+    public String geeting(@RequestParam(name = "mode")String mode, Model model) {
+		return mode;
     }
 }

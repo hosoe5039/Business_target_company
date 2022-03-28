@@ -19,26 +19,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 
-public class Surrounding_company {
+public class CompanyRegister {
 	@PostMapping("map2525")
-	String index(Model modelMap,@RequestParam(name = "lat")String lat,@RequestParam(name = "lng")String lng) throws IOException {
+	String index(Model modelMap,@RequestParam(name = "company")String company,@RequestParam(name = "adress")String adress,@RequestParam(name = "lat")String lat,@RequestParam(name = "lng")String lng) throws IOException {
 
-		//文字コード設定
-		System.out.println("値の取得"+lat + " "+ lng);
 
-		//JSPから現在地の緯度経度を取得する
-		double imakoko_lat = Double.parseDouble(lat);
-		double imakoko_ing = Double.parseDouble(lng);
-		String Current_location = "{lat:"+ lat + ",lng:" + lng + "}";
-
-		System.out.println("テスト:jspから現在地を取得出来ていることを確認する");
-		System.out.println(Current_location);
-
-		//JSPに現在地の緯度経度を転送する
-		modelMap.addAttribute("Current_location", Current_location);
+		//HTMLからの値が取得できていることの確認
+		System.out.println(company);
+		System.out.println(adress);
+		System.out.println("緯度：" + lat);
+		System.out.println("経度：" + lng);
 
 		//周辺の対象企業を取得する
-		String marker_info = marker_info(imakoko_lat,imakoko_ing);
+		boolean marker_info = Register(company,adress,lat,lng);
 
 		if(marker_info.equals("該当なし")) {
 			return "index";
@@ -57,15 +50,12 @@ public class Surrounding_company {
 	private JdbcTemplate jdbcTemplate;
 
 
-	private String marker_info(double imakoko_lat,double imakoko_ing) throws  IOException {
+	private boolean Register(String company,String adress,String lat,String lng) throws  IOException {
 
 
 
-		String sql_1 = "select companys.company, companys.adress, places.latitude, places.longitude,";
-		String sql_2 = "(6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(places.latitude)) * COS(RADIANS(places.longitude) - RADIANS(?))+ SIN(RADIANS(?)) * SIN(RADIANS(places.latitude)))) as DISTANCE";
-		String sql_3 = " from companys inner join places ON companys.id = places.company_ID ORDER BY distance asc;";
-
-		String sql = sql_1 + sql_2 + sql_3;
+		String company_insert_sql = "";
+		String place_insert_sql  = "";
 
 	    RowMapper<Company_data> rowMapper = new BeanPropertyRowMapper<Company_data>(Company_data.class);
 	    List<Company_data> MapList = jdbcTemplate.query(sql,new PreparedStatementSetter() {

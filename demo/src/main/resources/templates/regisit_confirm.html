@@ -3,7 +3,7 @@
 <head>
 <style>
 #maps {
-	height: 500px;
+	height: 300px;
 }
 </style>
 </head>
@@ -16,14 +16,14 @@
 			var marker = [];
 			var infoWindow = [];
 			var markerData = [ // マーカーを立てる場所名・緯度・経度
-					[(${marker_info})]
+				[(${marker_info})]
 			];
 
 			function initMap() {
 				// 地図の作成
 				map = new google.maps.Map(document.getElementById('maps'), { // #sampleに地図を埋め込む
 					center : new google.maps.LatLng(
-							[[${Current_location}]]
+							[(${marker_info})]
 			), // 地図の中心を指定
 					zoom : 20
 				// 地図のズームを指定
@@ -52,11 +52,6 @@
 				}
 			}
 
-
-
-
-
-
 			// マーカーにクリックイベントを追加
 			function markeClickrEvent(i) {
 				marker[i].addListener('click', function() { // マーカーをクリックしたとき
@@ -64,6 +59,21 @@
 				});
 			}
 		</script>
+    <h1>この位置で登録をしても良いですか？</h1>
+
+  <form action="./map222lo" Method="post">
+      <input type="hidden"  name="company" th:value="${company}">
+      <input type="hidden"  name="adress" th:value="${adress}">
+      <input type="hidden"  name="lat" th:value="${lat}">
+      <input type="hidden"  name="lng" th:value="${lng}">
+      <input type="submit" value="はい">
+  </form>
+
+  <form action="./company_registration.jsp">
+      <input type="submit" value="いいえ">
+  </form>
+
 </body>
+
 </html>
 

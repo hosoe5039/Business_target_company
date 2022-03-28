@@ -1,28 +1,29 @@
-<!DOCTYPE html">
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <style>
 #maps {
-	height: 1000px;
+	height: 500px;
 }
 </style>
 </head>
 <body>
   <div id="maps"></div>
-  <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCbfxc6tVLzjs8YmrdB59CMT5Iy3ZEXm0E&callback=initMap" async></script>
+  <script src ="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbfxc6tVLzjs8YmrdB59CMT5Iy3ZEXm0E&callback=initMap" async></script>
   <script>
+
 			var map;
 			var marker = [];
 			var infoWindow = [];
 			var markerData = [ // マーカーを立てる場所名・緯度・経度
-		th:text="${marker_info}"
+					[(${marker_info})]
 			];
 
 			function initMap() {
 				// 地図の作成
 				map = new google.maps.Map(document.getElementById('maps'), { // #sampleに地図を埋め込む
 					center : new google.maps.LatLng(
-		th:text="${Current_location}"
+							[[${Current_location}]]
 			), // 地図の中心を指定
 					zoom : 20
 				// 地図のズームを指定
@@ -30,6 +31,8 @@
 
 				// マーカー毎の処理
 				for (var i = 0; i < markerData.length; i++) {
+					console.log(markerData[i]);
+
 					markerLatLng = new google.maps.LatLng({
 						lat : markerData[i]['lat'],
 						lng : markerData[i]['lng']
@@ -41,7 +44,7 @@
 					});
 
 					infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
-						content : '<div class="map">' + markerData[i]['name']
+						content : '<div class="maps">' + markerData[i]['name']
 								+ '</div>' // 吹き出しに表示する内容
 					});
 
@@ -49,10 +52,15 @@
 				}
 			}
 
+
+
+
+
+
 			// マーカーにクリックイベントを追加
 			function markeClickrEvent(i) {
 				marker[i].addListener('click', function() { // マーカーをクリックしたとき
-					infoWindow[i].open(map, marker[i]); // 吹き出しの表示
+					infoWindow[i].open(maps, marker[i]); // 吹き出しの表示
 				});
 			}
 		</script>

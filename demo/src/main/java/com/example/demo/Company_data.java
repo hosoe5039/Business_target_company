@@ -3,7 +3,9 @@ package com.example.demo;
 import lombok.Data;
 
 // setter/getterを付けるアノテーション
+
 @Data
+
 public class Company_data {
 	private String company;
 	private String adress;

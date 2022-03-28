@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+	runtimeOnly 'mysql:mysql-connector-java'
 	implementation 'org.projectlombok:lombok:1.16.4'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
